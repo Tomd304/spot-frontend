@@ -23,7 +23,7 @@ const Dashboard = (props) => {
       console.log("calling");
       try {
         axios(
-          "http://quiet-badlands-79645.herokuapp.com/search/getItems?" +
+          "https://quiet-badlands-79645.herokuapp.com/search/getItems?" +
             new URLSearchParams({
               q,
               t,
