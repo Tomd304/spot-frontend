@@ -20,25 +20,29 @@ const Dashboard = (props) => {
     const redditGet = (q, t, sort) => {
       setMusicItemsLoading(true);
       console.log("calling");
-      axios(
-        "http://quiet-badlands-79645.herokuapp.com/search/getItems?" +
-          new URLSearchParams({
-            q,
-            t,
-            sort,
-          }),
-        {
-          method: "get",
-          headers: {
-            Authorization: props.token,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      ).then((results) => {
-        console.log("called");
-        setMusicItems(results.data.results);
-        setMusicItemsLoading(false);
-      });
+      try {
+        axios(
+          "http://quiet-badlands-79645.herokuapp.com/search/getItems?" +
+            new URLSearchParams({
+              q,
+              t,
+              sort,
+            }),
+          {
+            method: "get",
+            headers: {
+              Authorization: props.token,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        ).then((results) => {
+          console.log("called");
+          setMusicItems(results.data.results);
+          setMusicItemsLoading(false);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     };
     redditGet(searchOps.q, searchOps.t, searchOps.sort);
   }, [searchOps]);

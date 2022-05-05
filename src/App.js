@@ -6,7 +6,6 @@ import { Credentials } from "./Credentials";
 
 function App() {
   const [token, setToken] = useState("");
-  const [gettingToken, setGettingToken] = useState(true);
   const spotify = Credentials();
   useEffect(() => {
     console.log("getting token");
@@ -35,7 +34,6 @@ function App() {
         console.log(tokenResponse);
         setToken("Bearer " + tokenResponse.data.access_token);
         console.log("token set : " + token);
-        setGettingToken(false);
       } catch (e) {
         console.log(e);
       }
@@ -43,7 +41,7 @@ function App() {
     callToken();
   }, [spotify.ClientId, spotify.ClientSecret]);
 
-  return <>{!gettingToken ? <Dashboard token={token} /> : null}</>;
+  return <>{token !== "" ? <Dashboard token={token} /> : null}</>;
 }
 
 export default App;
