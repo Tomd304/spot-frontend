@@ -1,0 +1,74 @@
+.card {
+    width: 15em;
+    height: 20.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #303030;
+    padding: 1em;
+    border-radius: 0.5em;
+    text-align: center;
+}
+
+.card:hover {
+    background-color: #333333;
+    cursor: pointer;
+}
+
+
+.card-img {
+    height: 13em;
+    width: 13em;
+}
+
+.card-img, h1, p {
+    margin-bottom: 0.5em;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    /* no underline */
+}
+
+a:hover {
+    color: rgb(194, 194, 194);
+    text-decoration: underline;
+    /* no underline */
+}
+
+.card-container h1 {
+    font-size: 1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 200px;
+}
+
+
+.card .artist {
+    font-size: 1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 200px;
+}
+
+.card .score {
+    font-size: 0.85em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.icons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 200px;
+    margin: 0.2em 0;
+}
+
+.accent {
+    color: red
+}
