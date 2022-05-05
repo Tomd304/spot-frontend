@@ -9,8 +9,8 @@ function App() {
   const spotify = Credentials();
   useEffect(() => {
     console.log("getting token");
-    console.log("id: " + REACT_APP_CLIENT_ID);
-    console.log("secret: " + REACT_APP_CLIENT_SECRET);
+    console.log("id: " + process.env.REACT_APP_CLIENT_ID);
+    console.log("secret: " + process.env.REACT_APP_CLIENT_SECRET);
     axios("https://accounts.spotify.com/api/token", {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
