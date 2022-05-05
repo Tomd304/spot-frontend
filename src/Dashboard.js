@@ -35,6 +35,7 @@ const Dashboard = (props) => {
           },
         }
       ).then((results) => {
+        console.log("called");
         setMusicItems(results.data.results);
         setMusicItemsLoading(false);
       });
