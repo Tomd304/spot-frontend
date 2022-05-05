@@ -19,6 +19,7 @@ const Dashboard = (props) => {
   useEffect(() => {
     const redditGet = (q, t, sort) => {
       setMusicItemsLoading(true);
+      console.log("token in props: " + props.token);
       console.log("calling");
       try {
         axios(
@@ -32,7 +33,7 @@ const Dashboard = (props) => {
             method: "get",
             headers: {
               Authorization: props.token,
-              "Content-Type": "application/x-www-form-urlencoded",
+              "Content-Type": "application/json",
             },
           }
         ).then((results) => {
