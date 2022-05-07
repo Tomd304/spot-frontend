@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Dashboard from "./Dashboard";
 import "./App.css";
+import axios from "axios";
 import { Credentials } from "./Credentials";
+import qs from "query-string";
+import { faQuoteLeftAlt } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [token, setToken] = useState("");
   const spotify = Credentials();
-
+  console.log(spotify);
   useEffect(() => {
     const callToken = async () => {
       try {
