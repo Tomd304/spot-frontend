@@ -23,7 +23,6 @@ const Modal = (props) => {
   const iconSize = 40;
   const copyText = () => {
     copy(props.info.url);
-    alert(`You have copied "${props.info.url}"`);
     props.closeModal();
   };
   return (
