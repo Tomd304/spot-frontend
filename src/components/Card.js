@@ -53,19 +53,16 @@ const Card = (props) => {
       </div>
 
       <div className="text-links">
-        <a
-          href={props.item.spotInfo.url}
-          style={{ color: "rgb(30 215 96)" }}
-          className="link-item"
-        >
-          <FontAwesomeIcon
-            style={{ cursor: "pointer" }}
-            icon={brands("spotify")}
-          />
-        </a>
+        <div>
+          <a href={props.item.spotInfo.url} style={{ color: "rgb(30 215 96)" }}>
+            <FontAwesomeIcon
+              style={{ cursor: "pointer" }}
+              icon={brands("spotify")}
+            />
+          </a>
+        </div>
         <div
           style={{ color: props.disableSave ? "gray" : " rgb(255, 88, 88)" }}
-          className="link-item"
         >
           <FontAwesomeIcon
             style={{ cursor: "pointer" }}
@@ -77,24 +74,22 @@ const Card = (props) => {
             onClick={props.disableSave ? null : saveToggleClick}
           />
         </div>{" "}
-        <a
-          style={{ color: "rgb(212, 212, 212)" }}
-          href={props.item.redditInfo.url}
-          className="link-item"
-        >
-          <FontAwesomeIcon
-            style={{ cursor: "pointer" }}
-            icon={brands("reddit-alien")}
-          />
-        </a>
-        <div
-          style={{ color: "aliceblue" }}
-          className="link-item"
-          onClick={() => props.openModal(props.item.spotInfo)}
-        >
+        <div>
+          <a
+            style={{ color: "rgb(212, 212, 212)" }}
+            href={props.item.redditInfo.url}
+          >
+            <FontAwesomeIcon
+              style={{ cursor: "pointer" }}
+              icon={brands("reddit-alien")}
+            />
+          </a>
+        </div>
+        <div style={{ color: "aliceblue" }}>
           <FontAwesomeIcon
             style={{ cursor: "pointer" }}
             icon={solid("share-nodes")}
+            onClick={() => props.openModal(props.item.spotInfo)}
           />
         </div>
       </div>
