@@ -4,9 +4,22 @@ import { solid, brands } from "@fortawesome/fontawesome-svg-core/import.macro"; 
 import { useState } from "react";
 
 const Card = (props) => {
+  const saveToggleClick = async () => {
+    props.setDisableSave(true);
+    const res = props.saved
+      ? await props.removeSavedAlbum(props.item.spotInfo.id)
+      : await props.addSavedAlbum(props.item.spotInfo.id);
+    if (res) {
+      props.setDisableSave(false);
+    } else {
+      // ADD ERROR HANDLING ALERT
+      props.setDisableSave(true);
+    }
+  };
+
   return (
     <div className="card">
-      <a href={props.item.spotInfo.url} rel="noreferrer" target="_blank">
+      <a href={props.item.spotInfo.url} rel="nor\eferrer" target="_blank">
         <img
           src={props.item.spotInfo.image}
           style={{ cursor: "pointer" }}
@@ -50,10 +63,18 @@ const Card = (props) => {
             icon={brands("spotify")}
           />
         </a>
-        <div style={{ color: " rgb(255, 88, 88)" }} className="link-item">
+        <div
+          style={{ color: props.disableSave ? "gray" : " rgb(255, 88, 88)" }}
+          className="link-item"
+        >
           <FontAwesomeIcon
             style={{ cursor: "pointer" }}
-            icon={solid("heart-circle-plus")}
+            icon={
+              props.saved
+                ? solid("heart-circle-minus")
+                : solid("heart-circle-plus")
+            }
+            onClick={props.disableSave ? null : saveToggleClick}
           />
         </div>{" "}
         <a

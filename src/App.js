@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Dashboard from "./Dashboard";
 import "./App.css";
-import axios from "axios";
-import { Credentials } from "./Credentials";
-import qs from "query-string";
-import { faQuoteLeftAlt } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [token, setToken] = useState("");
-  const spotify = Credentials();
-  console.log(spotify);
   useEffect(() => {
     const callToken = async () => {
       try {
@@ -20,6 +14,7 @@ function App() {
           urlToken = urlParams.get("code");
           setToken("Bearer " + urlToken);
           window.history.pushState({}, document.title, "/");
+          console.log("Storing: " + token);
         }
         if (token == "" && urlToken == "") {
           window.location.replace("http://localhost:5000/auth/login");
@@ -29,7 +24,7 @@ function App() {
       }
     };
     callToken();
-  }, [spotify.ClientId, spotify.ClientSecret]);
+  }, [process.env.REACT_APP_CLIENT_ID, process.env.REACT_APP_CLIENT_SECRET]);
 
   return <>{token !== "" ? <Dashboard token={token} /> : null}</>;
 }
