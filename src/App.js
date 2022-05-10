@@ -26,7 +26,7 @@ function App() {
       }
     };
     callToken();
-  }, [process.env.REACT_APP_CLIENT_ID, process.env.REACT_APP_CLIENT_SECRET]);
+  }, []);
 
   return <>{token !== "" ? <Dashboard token={token} /> : null}</>;
 }
