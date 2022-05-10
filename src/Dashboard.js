@@ -38,7 +38,8 @@ const Dashboard = (props) => {
       console.log("token in props: " + props.token);
       try {
         axios(
-          "http://localhost:5000/search/getItems?" +
+          REACT_APP_BACKEND_URL +
+            "search/getItems?" +
             new URLSearchParams({
               q,
               t,
@@ -82,7 +83,8 @@ const Dashboard = (props) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
-      "http://localhost:5000/spotify/saveAlbum?" +
+      REACT_APP_BACKEND_URL +
+        "spotify/saveAlbum?" +
         new URLSearchParams({
           id,
         }),
@@ -105,7 +107,8 @@ const Dashboard = (props) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
-      "http://localhost:5000/spotify/removeAlbum?" +
+      REACT_APP_BACKEND_URL +
+        "spotify/removeAlbum?" +
         new URLSearchParams({
           id,
         }),

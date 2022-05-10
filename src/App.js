@@ -17,7 +17,7 @@ function App() {
           console.log("Storing: " + token);
         }
         if (token == "" && urlToken == "") {
-          window.location.replace("http://localhost:5000/auth/login");
+          window.location.replace(REACT_APP_BACKEND_URL + "auth/login");
         }
       } catch (e) {
         console.log(e);
