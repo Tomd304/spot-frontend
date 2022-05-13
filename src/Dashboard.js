@@ -103,6 +103,10 @@ const Dashboard = (props) => {
     if (res.status == 200) {
       setSavedAlbums([...savedAlbums, id]);
       return true;
+    } else if (res.status == 401) {
+      console.log("Expired / Bad Token, re-requesting");
+      props.setToken("");
+      window.location.replace("/");
     } else {
       return false;
     }
@@ -127,6 +131,10 @@ const Dashboard = (props) => {
     if (res.status == 200) {
       setSavedAlbums([...savedAlbums].filter((i) => i !== id));
       return true;
+    } else if (res.status == 401) {
+      console.log("Expired / Bad Token, re-requesting");
+      props.setToken("");
+      window.location.replace("/");
     } else {
       return false;
     }
