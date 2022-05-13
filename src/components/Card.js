@@ -62,7 +62,13 @@ const Card = (props) => {
           </a>
         </div>
         <div
-          style={{ color: props.disableSave ? "gray" : " rgb(255, 88, 88)" }}
+          style={{
+            color: props.disableSave
+              ? "gray"
+              : props.saved
+              ? " rgb(255, 88, 88)"
+              : "rgb(125, 70, 70)",
+          }}
         >
           <FontAwesomeIcon
             style={{ cursor: "pointer" }}
