@@ -28,7 +28,9 @@ function App() {
     callToken();
   }, []);
 
-  return <>{token !== "" ? <Dashboard token={token} /> : null}</>;
+  return (
+    <>{token !== "" ? <Dashboard token={token} setToken={setToken} /> : null}</>
+  );
 }
 
 export default App;

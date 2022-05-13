@@ -27,6 +27,11 @@ const Dashboard = (props) => {
     let res = await fetch(url, {
       headers: { Authorization: props.token },
     });
+    if (res.status == 401) {
+      console.log("Expired / Bad Token, re-requesting");
+      props.setToken("");
+      window.location.replace("/");
+    }
     let json = await res.json();
     console.timeEnd("savedAlbums");
     setSavedAlbums(json.results);
