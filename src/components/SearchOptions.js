@@ -1,5 +1,7 @@
 import "./SearchOptions.css";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
 
 const SearchOptions = (props) => {
   const [disable, setDisable] = useState(false);
@@ -71,18 +73,22 @@ const SearchOptions = (props) => {
       {props.loading ? (
         <button disabled={props.loading}>Please wait</button>
       ) : (
-        <button className="clickable">Search</button>
+        <div className="nav-buttons">
+          <FontAwesomeIcon
+            icon={solid("caret-left")}
+            className="page-button"
+            style={!props.before ? { color: "rgb(75,75,75)" } : null}
+            onClick={props.before ? props.prevPage : null}
+          />
+          <button className="clickable">Search</button>
+          <FontAwesomeIcon
+            icon={solid("caret-right")}
+            className="page-button"
+            style={!props.after ? { color: "rgb(75,75,75)" } : null}
+            onClick={props.after ? props.nextPage : null}
+          />
+        </div>
       )}
-      {props.itemsSelected ? (
-        <button
-          disabled={props.loading}
-          type="button"
-          className="clickable"
-          onClick={props.updateAlbums}
-        >
-          Add / Remove to Spotify Saved
-        </button>
-      ) : null}
     </form>
   );
 };

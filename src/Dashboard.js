@@ -19,6 +19,9 @@ const Dashboard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [shareInfo, setShareInfo] = useState({});
   const [savedAlbums, setSavedAlbums] = useState([]);
+  const [page, setPage] = useState({ index: 0, move: "refresh" });
+  const [after, setAfter] = useState(null);
+  const [before, setBefore] = useState(null);
 
   const getSavedAlbums = async () => {
     console.log("getting saved");
@@ -37,51 +40,70 @@ const Dashboard = (props) => {
     setSavedAlbums(json.results);
   };
 
+  const redditGet = async (action) => {
+    setMusicItemsLoading(true);
+    console.log("token in props: " + props.token);
+    console.log("page sending: " + page.index);
+    let params = {
+      q: searchOps.q,
+      t: searchOps.t,
+      sort: searchOps.sort,
+      page: page.index,
+    };
+    if (action == "after") {
+      params.after = after;
+      params.before = "before";
+    } else if (action == "before") {
+      params.before = before;
+      params.after = "after";
+    } else if (action == "refresh") {
+      params.before = "before";
+      params.after = "after";
+    }
+    let options = {
+      url: process.env.REACT_APP_BACKEND_URL + "search/getItems",
+      params,
+      method: "get",
+      headers: {
+        Authorization: props.token,
+        "Content-Type": "application/json",
+      },
+    };
+    let res = await axios(options);
+    console.log(res.data);
+    setMusicItems(res.data.results);
+    setAfter(res.data.after);
+    setBefore(res.data.before);
+  };
+
+  const apiCalls = async (action) => {
+    setMusicItemsLoading(true);
+    await Promise.all([redditGet(action), getSavedAlbums()]);
+    setMusicItemsLoading(false);
+  };
+
   useEffect(() => {
-    const redditGet = (q, t, sort) => {
-      setMusicItemsLoading(true);
-      console.log("token in props: " + props.token);
-      try {
-        axios(
-          process.env.REACT_APP_BACKEND_URL +
-            "search/getItems?" +
-            new URLSearchParams({
-              q,
-              t,
-              sort,
-            }),
-          {
-            method: "get",
-            headers: {
-              Authorization: props.token,
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((results) => {
-          setMusicItems(results.data.results);
-        });
-      } catch (e) {
-        console.log("failed....");
-        console.log(e);
-      }
-    };
-    const apiCalls = async () => {
-      await Promise.all([
-        getSavedAlbums(),
-        redditGet(searchOps.q, searchOps.t, searchOps.sort),
-      ]);
-      setMusicItemsLoading(false);
-    };
-    apiCalls();
-  }, [searchOps]);
+    console.log(page.index);
+    apiCalls(page.move);
+  }, [page]);
+
+  const nextPage = () => {
+    setPage({ index: page.index + 1, move: "after" });
+  };
+
+  const prevPage = () => {
+    setPage({ index: page.index - 1, move: "before" });
+  };
 
   const searchSubmit = (e) => {
     e.preventDefault();
+    setMusicItems([]);
     setSearchOps({
       q: e.target[0].value,
       sort: e.target[1].value,
       t: e.target[2].value,
     });
+    setPage({ index: 0, move: "refresh" });
   };
 
   const addSavedAlbum = async (id) => {
@@ -159,6 +181,10 @@ const Dashboard = (props) => {
         <SearchOptions
           searchSubmit={searchSubmit}
           loading={musicItemsLoading ? true : false}
+          after={after}
+          before={before}
+          nextPage={nextPage}
+          prevPage={prevPage}
         />
         <CardContainer
           musicItemsLoading={musicItemsLoading}

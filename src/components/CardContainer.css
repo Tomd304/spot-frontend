@@ -7,3 +7,12 @@
     margin: auto;
     margin-bottom: 2em;
 }
+
+.page-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3em;
+    margin: auto;
+    font-size: 3em;
+}
