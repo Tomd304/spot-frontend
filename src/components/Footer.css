@@ -1,5 +1,5 @@
 .footer {
-    height: 2em;
+    height: 2.75em;
     background-color: #303030;
     width: 100%;
     text-align: center;
@@ -7,16 +7,7 @@
     position: fixed;
     bottom: 0;
     border-top: white 1px solid;
-}
-
-.footer h1 {
-    font-size: 1.5em;
-    margin: 0;
-    margin-bottom: 0.2em;
-}
-
-.footer a {
-    font-size: 1em;
-    margin: 0;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
