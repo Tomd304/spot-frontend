@@ -18,17 +18,7 @@ const Card = (props) => {
   };
 
   return (
-    <div
-      className="card"
-      style={
-        props.item.spotInfo.album.url.substring(
-          props.item.spotInfo.album.url.length - 22,
-          props.item.spotInfo.album.url.length
-        ) == props.item.spotInfo.id
-          ? { border: "2px solid red" }
-          : null
-      }
-    >
+    <div className="card">
       <a href={props.item.spotInfo.url} rel="nor\eferrer" target="_blank">
         <img
           src={props.item.spotInfo.image}
