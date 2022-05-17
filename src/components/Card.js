@@ -7,8 +7,8 @@ const Card = (props) => {
   const saveToggleClick = async () => {
     props.setDisableSave(true);
     const res = props.saved
-      ? await props.removeSavedAlbum(props.item.spotInfo.id)
-      : await props.addSavedAlbum(props.item.spotInfo.id);
+      ? await props.removeSavedItem(props.item.spotInfo.id)
+      : await props.addSavedItem(props.item.spotInfo.id);
     if (res) {
       props.setDisableSave(false);
     } else {
@@ -18,7 +18,17 @@ const Card = (props) => {
   };
 
   return (
-    <div className="card">
+    <div
+      className="card"
+      style={
+        props.item.spotInfo.album.url.substring(
+          props.item.spotInfo.album.url.length - 22,
+          props.item.spotInfo.album.url.length
+        ) == props.item.spotInfo.id
+          ? { border: "2px solid red" }
+          : null
+      }
+    >
       <a href={props.item.spotInfo.url} rel="nor\eferrer" target="_blank">
         <img
           src={props.item.spotInfo.image}
@@ -99,6 +109,14 @@ const Card = (props) => {
           />
         </div>
       </div>
+      <p style={{ fontSize: 10 }}>
+        album:
+        {props.item.spotInfo.album.url.substring(
+          props.item.spotInfo.album.url.length - 22,
+          props.item.spotInfo.album.url.length
+        )}
+      </p>
+      <p style={{ fontSize: 10 }}>track: {props.item.spotInfo.id}</p>
     </div>
   );
 };

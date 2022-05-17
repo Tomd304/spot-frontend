@@ -18,15 +18,19 @@ const Dashboard = (props) => {
   const [musicItemsLoading, setMusicItemsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [shareInfo, setShareInfo] = useState({});
-  const [savedAlbums, setSavedAlbums] = useState([]);
+  const [savedItems, setSavedItems] = useState([]);
   const [page, setPage] = useState({ index: 0, move: "refresh" });
   const [after, setAfter] = useState(null);
   const [before, setBefore] = useState(null);
 
-  const getSavedAlbums = async () => {
+  const getSavedItems = async () => {
     console.log("getting saved");
-    console.time("savedAlbums");
-    let url = process.env.REACT_APP_BACKEND_URL + "spotify/getSavedAlbums";
+    console.time("savedItems");
+    let url =
+      process.env.REACT_APP_BACKEND_URL +
+      (searchOps.q == "album"
+        ? "spotify/getSavedAlbums"
+        : "spotify/getSavedTracks");
     let res = await fetch(url, {
       headers: { Authorization: props.token },
     });
@@ -36,8 +40,8 @@ const Dashboard = (props) => {
       window.location.replace("/");
     }
     let json = await res.json();
-    console.timeEnd("savedAlbums");
-    setSavedAlbums(json.results);
+    console.timeEnd("savedItems");
+    setSavedItems(json.results);
   };
 
   const redditGet = async (action) => {
@@ -78,7 +82,7 @@ const Dashboard = (props) => {
 
   const apiCalls = async (action) => {
     setMusicItemsLoading(true);
-    await Promise.all([redditGet(action), getSavedAlbums()]);
+    await Promise.all([redditGet(action), getSavedItems()]);
     setMusicItemsLoading(false);
   };
 
@@ -106,12 +110,12 @@ const Dashboard = (props) => {
     setPage({ index: 0, move: "refresh" });
   };
 
-  const addSavedAlbum = async (id) => {
+  const addSavedItem = async (id) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
       process.env.REACT_APP_BACKEND_URL +
-        "spotify/saveAlbum?" +
+        (searchOps.q == "album" ? "spotify/saveAlbum?" : "spotify/saveTrack?") +
         new URLSearchParams({
           id,
         }),
@@ -123,7 +127,7 @@ const Dashboard = (props) => {
       }
     );
     if (res.status == 200) {
-      setSavedAlbums([...savedAlbums, id]);
+      setSavedItems([...savedItems, id]);
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
@@ -134,12 +138,14 @@ const Dashboard = (props) => {
     }
   };
 
-  const removeSavedAlbum = async (id) => {
+  const removeSavedItem = async (id) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
       process.env.REACT_APP_BACKEND_URL +
-        "spotify/removeAlbum?" +
+        (searchOps.q == "album"
+          ? "spotify/removeAlbum?"
+          : "spotify/removeTrack?") +
         new URLSearchParams({
           id,
         }),
@@ -151,7 +157,7 @@ const Dashboard = (props) => {
       }
     );
     if (res.status == 200) {
-      setSavedAlbums([...savedAlbums].filter((i) => i !== id));
+      setSavedItems([...savedItems].filter((i) => i !== id));
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
@@ -192,9 +198,9 @@ const Dashboard = (props) => {
           openModal={openModal}
           type={searchOps.q}
           token={props.token}
-          savedAlbums={savedAlbums}
-          addSavedAlbum={addSavedAlbum}
-          removeSavedAlbum={removeSavedAlbum}
+          savedItems={savedItems}
+          addSavedItem={addSavedItem}
+          removeSavedItem={removeSavedItem}
         />
       </div>
       <Footer />

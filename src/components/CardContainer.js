@@ -15,11 +15,9 @@ const CardContainer = (props) => {
             <Card
               item={item}
               openModal={props.openModal}
-              saved={
-                props.savedAlbums.includes(item.spotInfo.id) ? true : false
-              }
-              addSavedAlbum={props.addSavedAlbum}
-              removeSavedAlbum={props.removeSavedAlbum}
+              saved={props.savedItems.includes(item.spotInfo.id) ? true : false}
+              addSavedItem={props.addSavedItem}
+              removeSavedItem={props.removeSavedItem}
               key={String(item._id)}
               disableSave={disableSave}
               setDisableSave={setDisableSave}
