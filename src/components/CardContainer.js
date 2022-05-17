@@ -10,17 +10,18 @@ const CardContainer = (props) => {
       {props.musicItemsLoading ? (
         <p>Loading...</p>
       ) : props.musicItems.length > 0 ? (
-        props.musicItems.map((item) => {
+        props.musicItems.map((item, index) => {
           return (
             <Card
               item={item}
               openModal={props.openModal}
-              saved={props.savedItems.includes(item.spotInfo.id) ? true : false}
+              saved={props.savedItems[index]}
               addSavedItem={props.addSavedItem}
               removeSavedItem={props.removeSavedItem}
               key={String(item._id)}
               disableSave={disableSave}
               setDisableSave={setDisableSave}
+              index={index}
             />
           );
         })

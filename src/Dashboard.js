@@ -23,25 +23,44 @@ const Dashboard = (props) => {
   const [after, setAfter] = useState(null);
   const [before, setBefore] = useState(null);
 
+  // const getSavedItems = async () => {
+  //   console.log("getting saved");
+  //   console.time("savedItems");
+  //   let url =
+  //     process.env.REACT_APP_BACKEND_URL +
+  //     (searchOps.q == "album"
+  //       ? "spotify/getSavedAlbums"
+  //       : "spotify/getSavedTracks");
+  //   let res = await fetch(url, {
+  //     headers: { Authorization: props.token },
+  //   });
+  //   if (res.status == 401) {
+  //     console.log("Expired / Bad Token, re-requesting");
+  //     props.setToken("");
+  //     window.location.replace("/");
+  //   }
+  //   let json = await res.json();
+  //   console.timeEnd("savedItems");
+  //   setSavedItems(json.results);
+  // };
+
   const getSavedItems = async () => {
     console.log("getting saved");
     console.time("savedItems");
-    let url =
-      process.env.REACT_APP_BACKEND_URL +
-      (searchOps.q == "album"
-        ? "spotify/getSavedAlbums"
-        : "spotify/getSavedTracks");
-    let res = await fetch(url, {
+    let url = process.env.REACT_APP_BACKEND_URL + "spotify/checkSaved";
+    let ids = musicItems.map((i) => i.spotInfo.id).join(",");
+    console.log("saved ids sending: " + ids);
+    let res = await axios(url, {
       headers: { Authorization: props.token },
+      params: { type: searchOps.q, ids },
     });
     if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
       props.setToken("");
       window.location.replace("/");
     }
-    let json = await res.json();
     console.timeEnd("savedItems");
-    setSavedItems(json.results);
+    setSavedItems(res.data.results);
   };
 
   const redditGet = async (action) => {
@@ -80,15 +99,25 @@ const Dashboard = (props) => {
     setBefore(res.data.before);
   };
 
-  const apiCalls = async (action) => {
+  const retrieveMusicItems = async (action) => {
     setMusicItemsLoading(true);
-    await Promise.all([redditGet(action), getSavedItems()]);
+    redditGet(action);
+  };
+
+  const retrieveSavedItems = async () => {
+    await getSavedItems();
     setMusicItemsLoading(false);
   };
 
   useEffect(() => {
+    if (musicItems.length > 0) {
+      retrieveSavedItems();
+    }
+  }, [musicItems]);
+
+  useEffect(() => {
     console.log(page.index);
-    apiCalls(page.move);
+    retrieveMusicItems(page.move);
   }, [page]);
 
   const nextPage = () => {
@@ -110,7 +139,7 @@ const Dashboard = (props) => {
     setPage({ index: 0, move: "refresh" });
   };
 
-  const addSavedItem = async (id) => {
+  const addSavedItem = async (id, index) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
@@ -127,7 +156,9 @@ const Dashboard = (props) => {
       }
     );
     if (res.status == 200) {
-      setSavedItems([...savedItems, id]);
+      let newSaved = savedItems;
+      newSaved[index] = !newSaved[index];
+      setSavedItems(newSaved);
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
@@ -138,7 +169,7 @@ const Dashboard = (props) => {
     }
   };
 
-  const removeSavedItem = async (id) => {
+  const removeSavedItem = async (id, index) => {
     console.log("sending");
     console.log(id);
     const res = await fetch(
@@ -157,7 +188,9 @@ const Dashboard = (props) => {
       }
     );
     if (res.status == 200) {
-      setSavedItems([...savedItems].filter((i) => i !== id));
+      let newSaved = savedItems;
+      newSaved[index] = !newSaved[index];
+      setSavedItems(newSaved);
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");

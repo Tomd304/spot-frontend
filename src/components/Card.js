@@ -7,8 +7,8 @@ const Card = (props) => {
   const saveToggleClick = async () => {
     props.setDisableSave(true);
     const res = props.saved
-      ? await props.removeSavedItem(props.item.spotInfo.id)
-      : await props.addSavedItem(props.item.spotInfo.id);
+      ? await props.removeSavedItem(props.item.spotInfo.id, props.index)
+      : await props.addSavedItem(props.item.spotInfo.id, props.index);
     if (res) {
       props.setDisableSave(false);
     } else {
