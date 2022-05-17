@@ -99,14 +99,6 @@ const Card = (props) => {
           />
         </div>
       </div>
-      <p style={{ fontSize: 10 }}>
-        album:
-        {props.item.spotInfo.album.url.substring(
-          props.item.spotInfo.album.url.length - 22,
-          props.item.spotInfo.album.url.length
-        )}
-      </p>
-      <p style={{ fontSize: 10 }}>track: {props.item.spotInfo.id}</p>
     </div>
   );
 };
