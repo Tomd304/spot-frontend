@@ -33,7 +33,11 @@ const SearchOptions = (props) => {
   };
 
   return (
-    <form className="form-container" onSubmit={submitSearch}>
+    <form
+      className="form-container"
+      onSubmit={submitSearch}
+      style={props.loading ? { border: "2px solid red" } : null}
+    >
       <select disabled={props.loading} name="q" className="typeSelect">
         <option name="album" value="album">
           Albums
