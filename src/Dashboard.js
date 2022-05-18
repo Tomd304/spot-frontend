@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "./components/Modal";
 import Header from "./components/Header";
+import Login from "./components/Login";
 import SearchOptions from "./components/SearchOptions";
 import CardContainer from "./components/CardContainer";
 import ArrowBack from "./components/ArrowBack";
@@ -31,7 +32,7 @@ const Dashboard = (props) => {
         let url = process.env.REACT_APP_BACKEND_URL + "spotify/checkSaved";
         let ids = musicItems.map((i) => i.spotInfo.id).join(",");
         let res = await axios(url, {
-          headers: { Authorization: props.token },
+          headers: { Authorization: props.auth.token },
           params: { type: searchOps.q, ids },
         });
         if (res.status == 401) {
@@ -44,7 +45,7 @@ const Dashboard = (props) => {
       await getSavedItems();
       setLoading(false);
     };
-    if (musicItems.length > 0) {
+    if (musicItems.length > 0 && props.auth.type !== "noScope") {
       retrieveSavedItems();
     } else {
       setLoading(false);
@@ -68,7 +69,7 @@ const Dashboard = (props) => {
           params,
           method: "get",
           headers: {
-            Authorization: props.token,
+            Authorization: props.auth.token,
             "Content-Type": "application/json",
           },
         };
@@ -97,6 +98,10 @@ const Dashboard = (props) => {
       ) : null}
       <Header />
       <div className="dashboard">
+        {props.auth.type == "noScope" ? (
+          <Login auth={props.auth} setauth={props.setAuth} />
+        ) : null}
+
         <SearchOptions
           loading={loading ? true : false}
           after={after}
@@ -111,7 +116,7 @@ const Dashboard = (props) => {
           musicItems={musicItems}
           openModal={openModal}
           type={searchOps.q}
-          token={props.token}
+          auth={props.auth}
           savedItems={savedItems}
           setSavedItems={setSavedItems}
         />

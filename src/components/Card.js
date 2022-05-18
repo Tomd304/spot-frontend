@@ -22,7 +22,7 @@ const Card = (props) => {
     const res = await axios(url, {
       method: "put",
       headers: {
-        Authorization: props.token,
+        Authorization: props.auth.token,
       },
       params: { id: props.item.spotInfo.id },
     });
@@ -33,7 +33,6 @@ const Card = (props) => {
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
-      props.setToken("");
       window.location.replace("/");
     } else {
       return false;
@@ -47,7 +46,7 @@ const Card = (props) => {
     const res = await axios(url, {
       method: "delete",
       headers: {
-        Authorization: props.token,
+        Authorization: props.auth.token,
       },
       params: { id: props.item.spotInfo.id },
     });
@@ -58,7 +57,6 @@ const Card = (props) => {
       return true;
     } else if (res.status == 401) {
       console.log("Expired / Bad Token, re-requesting");
-      props.setToken("");
       window.location.replace("/");
     } else {
       return false;
@@ -109,25 +107,27 @@ const Card = (props) => {
             />
           </a>
         </div>
-        <div
-          style={{
-            color: props.disableSave
-              ? "gray"
-              : props.saved
-              ? " rgb(255, 88, 88)"
-              : "rgb(125, 70, 70)",
-          }}
-        >
-          <FontAwesomeIcon
-            style={{ cursor: "pointer" }}
-            icon={
-              props.saved
-                ? solid("heart-circle-minus")
-                : solid("heart-circle-plus")
-            }
-            onClick={props.disableSave ? null : saveClick}
-          />
-        </div>{" "}
+        {props.auth.type == "withScope" ? (
+          <div
+            style={{
+              color: props.disableSave
+                ? "gray"
+                : props.saved
+                ? " rgb(255, 88, 88)"
+                : "rgb(125, 70, 70)",
+            }}
+          >
+            <FontAwesomeIcon
+              style={{ cursor: "pointer" }}
+              icon={
+                props.saved
+                  ? solid("heart-circle-minus")
+                  : solid("heart-circle-plus")
+              }
+              onClick={props.disableSave ? null : saveClick}
+            />
+          </div>
+        ) : null}
         <div>
           <a
             style={{ color: "rgb(212, 212, 212)" }}

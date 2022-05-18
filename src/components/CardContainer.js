@@ -23,7 +23,7 @@ const CardContainer = (props) => {
               savedItems={props.savedItems}
               setSavedItems={props.setSavedItems}
               type={props.type}
-              token={props.token}
+              auth={props.auth}
             />
           );
         })
