@@ -112,6 +112,8 @@ const Dashboard = (props) => {
   useEffect(() => {
     if (musicItems.length > 0) {
       retrieveSavedItems();
+    } else {
+      setMusicItemsLoading(false);
     }
   }, [musicItems]);
 
