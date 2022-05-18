@@ -1,6 +1,6 @@
 import "./CardContainer.css";
 import Card from "./Card";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CardContainer = (props) => {
   const [disableSave, setDisableSave] = useState(false);
