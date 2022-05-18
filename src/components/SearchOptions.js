@@ -21,8 +21,19 @@ const SearchOptions = (props) => {
     props.setPage({ index: props.page.index - 1, move: "before" });
   };
 
+  const submitSearch = (e) => {
+    e.preventDefault();
+    props.setMusicItems([]);
+    props.setSearchOps({
+      q: e.target[0].value,
+      sort: e.target[1].value,
+      t: e.target[2].value,
+    });
+    props.setPage({ index: 0, move: "" });
+  };
+
   return (
-    <form className="form-container" onSubmit={props.searchSubmit}>
+    <form className="form-container" onSubmit={submitSearch}>
       <select disabled={props.loading} name="q" className="typeSelect">
         <option name="album" value="album">
           Albums

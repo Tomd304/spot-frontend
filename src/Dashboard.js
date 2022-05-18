@@ -83,17 +83,6 @@ const Dashboard = (props) => {
     retrieveMusicItems(page.move);
   }, [page]);
 
-  const searchSubmit = (e) => {
-    e.preventDefault();
-    setMusicItems([]);
-    setSearchOps({
-      q: e.target[0].value,
-      sort: e.target[1].value,
-      t: e.target[2].value,
-    });
-    setPage({ index: 0, move: "" });
-  };
-
   const addSavedItem = async (id, index) => {
     console.log("sending");
     console.log(id);
@@ -173,12 +162,13 @@ const Dashboard = (props) => {
       <Header />
       <div className="dashboard">
         <SearchOptions
-          searchSubmit={searchSubmit}
           loading={loading ? true : false}
           after={after}
           before={before}
           page={page}
           setPage={setPage}
+          setMusicItems={setMusicItems}
+          setSearchOps={setSearchOps}
         />
         <CardContainer
           loading={loading}
