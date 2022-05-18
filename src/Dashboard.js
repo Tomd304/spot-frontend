@@ -15,120 +15,73 @@ const Dashboard = (props) => {
     sort: "top",
   });
   const [musicItems, setMusicItems] = useState([]);
-  const [musicItemsLoading, setMusicItemsLoading] = useState(true);
+  const [savedItems, setSavedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [shareInfo, setShareInfo] = useState({});
-  const [savedItems, setSavedItems] = useState([]);
-  const [page, setPage] = useState({ index: 0, move: "refresh" });
+  const [page, setPage] = useState({ index: 0, move: "" });
   const [after, setAfter] = useState(null);
   const [before, setBefore] = useState(null);
 
-  // const getSavedItems = async () => {
-  //   console.log("getting saved");
-  //   console.time("savedItems");
-  //   let url =
-  //     process.env.REACT_APP_BACKEND_URL +
-  //     (searchOps.q == "album"
-  //       ? "spotify/getSavedAlbums"
-  //       : "spotify/getSavedTracks");
-  //   let res = await fetch(url, {
-  //     headers: { Authorization: props.token },
-  //   });
-  //   if (res.status == 401) {
-  //     console.log("Expired / Bad Token, re-requesting");
-  //     props.setToken("");
-  //     window.location.replace("/");
-  //   }
-  //   let json = await res.json();
-  //   console.timeEnd("savedItems");
-  //   setSavedItems(json.results);
-  // };
-
-  const getSavedItems = async () => {
-    console.log("getting saved");
-    console.time("savedItems");
-    let url = process.env.REACT_APP_BACKEND_URL + "spotify/checkSaved";
-    let ids = musicItems.map((i) => i.spotInfo.id).join(",");
-    console.log("saved ids sending: " + ids);
-    let res = await axios(url, {
-      headers: { Authorization: props.token },
-      params: { type: searchOps.q, ids },
-    });
-    if (res.status == 401) {
-      console.log("Expired / Bad Token, re-requesting");
-      props.setToken("");
-      window.location.replace("/");
-    }
-    console.timeEnd("savedItems");
-    setSavedItems(res.data.results);
-  };
-
-  const redditGet = async (action) => {
-    setMusicItemsLoading(true);
-    console.log("token in props: " + props.token);
-    console.log("page sending: " + page.index);
-    let params = {
-      q: searchOps.q,
-      t: searchOps.t,
-      sort: searchOps.sort,
-      page: page.index,
-    };
-    if (action == "after") {
-      params.after = after;
-      params.before = "before";
-    } else if (action == "before") {
-      params.before = before;
-      params.after = "after";
-    } else if (action == "refresh") {
-      params.before = "before";
-      params.after = "after";
-    }
-    let options = {
-      url: process.env.REACT_APP_BACKEND_URL + "search/getItems",
-      params,
-      method: "get",
-      headers: {
-        Authorization: props.token,
-        "Content-Type": "application/json",
-      },
-    };
-    let res = await axios(options);
-    console.log(res.data);
-    setMusicItems(res.data.results);
-    setAfter(res.data.after);
-    setBefore(res.data.before);
-  };
-
-  const retrieveMusicItems = async (action) => {
-    setMusicItemsLoading(true);
-    redditGet(action);
-  };
-
-  const retrieveSavedItems = async () => {
-    await getSavedItems();
-    setMusicItemsLoading(false);
-  };
-
   useEffect(() => {
+    const retrieveSavedItems = async () => {
+      const getSavedItems = async () => {
+        let url = process.env.REACT_APP_BACKEND_URL + "spotify/checkSaved";
+        let ids = musicItems.map((i) => i.spotInfo.id).join(",");
+        let res = await axios(url, {
+          headers: { Authorization: props.token },
+          params: { type: searchOps.q, ids },
+        });
+        if (res.status == 401) {
+          console.log("Expired / Bad Token, re-requesting");
+          props.setToken("");
+          window.location.replace("/");
+        }
+        console.timeEnd("savedItems");
+        setSavedItems(res.data.results);
+      };
+      await getSavedItems();
+      setLoading(false);
+    };
     if (musicItems.length > 0) {
       retrieveSavedItems();
     } else {
-      setMusicItemsLoading(false);
+      setLoading(false);
     }
   }, [musicItems]);
 
   useEffect(() => {
+    const retrieveMusicItems = async (action) => {
+      const getMusicItems = async (action) => {
+        setLoading(true);
+        let params = {
+          q: searchOps.q,
+          t: searchOps.t,
+          sort: searchOps.sort,
+          page: page.index,
+          after: action == "after" ? after : "after",
+          before: action == "before" ? before : "before",
+        };
+        let options = {
+          url: process.env.REACT_APP_BACKEND_URL + "search/getItems",
+          params,
+          method: "get",
+          headers: {
+            Authorization: props.token,
+            "Content-Type": "application/json",
+          },
+        };
+        let res = await axios(options);
+        setMusicItems(res.data.results);
+        setAfter(res.data.after);
+        setBefore(res.data.before);
+      };
+      setLoading(true);
+      getMusicItems(action);
+    };
     console.log(page.index);
     retrieveMusicItems(page.move);
   }, [page]);
-
-  const nextPage = () => {
-    setPage({ index: page.index + 1, move: "after" });
-  };
-
-  const prevPage = () => {
-    setPage({ index: page.index - 1, move: "before" });
-  };
 
   const searchSubmit = (e) => {
     e.preventDefault();
@@ -138,7 +91,7 @@ const Dashboard = (props) => {
       sort: e.target[1].value,
       t: e.target[2].value,
     });
-    setPage({ index: 0, move: "refresh" });
+    setPage({ index: 0, move: "" });
   };
 
   const addSavedItem = async (id, index) => {
@@ -221,14 +174,14 @@ const Dashboard = (props) => {
       <div className="dashboard">
         <SearchOptions
           searchSubmit={searchSubmit}
-          loading={musicItemsLoading ? true : false}
+          loading={loading ? true : false}
           after={after}
           before={before}
-          nextPage={nextPage}
-          prevPage={prevPage}
+          page={page}
+          setPage={setPage}
         />
         <CardContainer
-          musicItemsLoading={musicItemsLoading}
+          loading={loading}
           musicItems={musicItems}
           openModal={openModal}
           type={searchOps.q}

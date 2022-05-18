@@ -12,6 +12,15 @@ const SearchOptions = (props) => {
       setDisable(false);
     }
   };
+
+  const nextPage = () => {
+    props.setPage({ index: props.page.index + 1, move: "after" });
+  };
+
+  const prevPage = () => {
+    props.setPage({ index: props.page.index - 1, move: "before" });
+  };
+
   return (
     <form className="form-container" onSubmit={props.searchSubmit}>
       <select disabled={props.loading} name="q" className="typeSelect">
@@ -78,14 +87,14 @@ const SearchOptions = (props) => {
             icon={solid("caret-left")}
             className="page-button"
             style={!props.before ? { color: "rgb(75,75,75)" } : null}
-            onClick={props.before ? props.prevPage : null}
+            onClick={props.before ? prevPage : null}
           />
           <button className="clickable">Search</button>
           <FontAwesomeIcon
             icon={solid("caret-right")}
             className="page-button"
             style={!props.after ? { color: "rgb(75,75,75)" } : null}
-            onClick={props.after ? props.nextPage : null}
+            onClick={props.after ? nextPage : null}
           />
         </div>
       )}

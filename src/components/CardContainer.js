@@ -7,7 +7,7 @@ const CardContainer = (props) => {
 
   return (
     <ul className="card-container">
-      {props.musicItemsLoading ? (
+      {props.loading ? (
         <p>Loading...</p>
       ) : props.musicItems.length > 0 ? (
         props.musicItems.map((item, index) => {
