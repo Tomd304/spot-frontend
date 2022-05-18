@@ -37,7 +37,6 @@ const Dashboard = (props) => {
           props.setToken("");
           window.location.replace("/");
         }
-        console.timeEnd("savedItems");
         setSavedItems(res.data.results);
       };
       await getSavedItems();
@@ -83,68 +82,6 @@ const Dashboard = (props) => {
     retrieveMusicItems(page.move);
   }, [page]);
 
-  const addSavedItem = async (id, index) => {
-    console.log("sending");
-    console.log(id);
-    const res = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        (searchOps.q == "album" ? "spotify/saveAlbum?" : "spotify/saveTrack?") +
-        new URLSearchParams({
-          id,
-        }),
-      {
-        method: "put",
-        headers: {
-          Authorization: props.token,
-        },
-      }
-    );
-    if (res.status == 200) {
-      let newSaved = savedItems;
-      newSaved[index] = !newSaved[index];
-      setSavedItems(newSaved);
-      return true;
-    } else if (res.status == 401) {
-      console.log("Expired / Bad Token, re-requesting");
-      props.setToken("");
-      window.location.replace("/");
-    } else {
-      return false;
-    }
-  };
-
-  const removeSavedItem = async (id, index) => {
-    console.log("sending");
-    console.log(id);
-    const res = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        (searchOps.q == "album"
-          ? "spotify/removeAlbum?"
-          : "spotify/removeTrack?") +
-        new URLSearchParams({
-          id,
-        }),
-      {
-        method: "delete",
-        headers: {
-          Authorization: props.token,
-        },
-      }
-    );
-    if (res.status == 200) {
-      let newSaved = savedItems;
-      newSaved[index] = !newSaved[index];
-      setSavedItems(newSaved);
-      return true;
-    } else if (res.status == 401) {
-      console.log("Expired / Bad Token, re-requesting");
-      props.setToken("");
-      window.location.replace("/");
-    } else {
-      return false;
-    }
-  };
-
   const openModal = (e) => {
     document.body.style.overflow = "hidden";
     setShareInfo(e);
@@ -174,8 +111,7 @@ const Dashboard = (props) => {
           type={searchOps.q}
           token={props.token}
           savedItems={savedItems}
-          addSavedItem={addSavedItem}
-          removeSavedItem={removeSavedItem}
+          setSavedItems={setSavedItems}
         />
       </div>
       <Footer />

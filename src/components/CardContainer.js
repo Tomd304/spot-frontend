@@ -16,12 +16,14 @@ const CardContainer = (props) => {
               item={item}
               openModal={props.openModal}
               saved={props.savedItems[index]}
-              addSavedItem={props.addSavedItem}
-              removeSavedItem={props.removeSavedItem}
               key={String(item._id)}
               disableSave={disableSave}
               setDisableSave={setDisableSave}
               index={index}
+              savedItems={props.savedItems}
+              setSavedItems={props.setSavedItems}
+              type={props.type}
+              token={props.token}
             />
           );
         })
