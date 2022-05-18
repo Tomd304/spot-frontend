@@ -20,30 +20,36 @@ import copy from "copy-to-clipboard";
 const Modal = (props) => {
   const iconSize = 40;
   const copyText = () => {
-    copy(props.info.url);
-    props.closeModal();
+    copy(props.shareInfo.url);
+    closeModal();
   };
+
+  const closeModal = (e) => {
+    document.body.style.overflow = "";
+    props.setShowModal(false);
+  };
+
   return (
-    <div id="overlay" onClick={props.closeModal}>
+    <div id="overlay" onClick={closeModal}>
       <div className="pop-up">
         <div className="close-button">
           <FontAwesomeIcon
-            onClick={props.closeModal}
+            onClick={closeModal}
             style={{ cursor: "pointer" }}
             icon={solid("xmark")}
           />
         </div>
         <div className="share-icons">
-          <FacebookShareButton url={props.info.url} onClick={props.closeModal}>
+          <FacebookShareButton url={props.shareInfo.url} onClick={closeModal}>
             <FacebookIcon round={true} size={iconSize} />
           </FacebookShareButton>
-          <TelegramShareButton url={props.info.url} onClick={props.closeModal}>
+          <TelegramShareButton url={props.shareInfo.url} onClick={closeModal}>
             <TelegramIcon round={true} size={iconSize} />
           </TelegramShareButton>
-          <WhatsappShareButton url={props.info.url} onClick={props.closeModal}>
+          <WhatsappShareButton url={props.shareInfo.url} onClick={closeModal}>
             <WhatsappIcon round={true} size={iconSize} />
           </WhatsappShareButton>
-          <TwitterShareButton url={props.info.url} onClick={props.closeModal}>
+          <TwitterShareButton url={props.shareInfo.url} onClick={closeModal}>
             <TwitterIcon round={true} size={iconSize} />
           </TwitterShareButton>
 

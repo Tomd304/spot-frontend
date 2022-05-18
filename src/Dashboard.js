@@ -151,14 +151,11 @@ const Dashboard = (props) => {
     setShowModal(true);
   };
 
-  const closeModal = (e) => {
-    document.body.style.overflow = "";
-    setShowModal(false);
-  };
-
   return (
     <div className="view">
-      {showModal ? <Modal closeModal={closeModal} info={shareInfo} /> : null}
+      {showModal ? (
+        <Modal shareInfo={shareInfo} setShowModal={setShowModal} />
+      ) : null}
       <Header />
       <div className="dashboard">
         <SearchOptions
