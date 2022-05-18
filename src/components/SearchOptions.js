@@ -1,7 +1,7 @@
 import "./SearchOptions.css";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
+import ArrowBack from "./ArrowBack";
+import ArrowNext from "./ArrowNext";
 
 const SearchOptions = (props) => {
   const [disable, setDisable] = useState(false);
@@ -11,14 +11,6 @@ const SearchOptions = (props) => {
     } else {
       setDisable(false);
     }
-  };
-
-  const nextPage = () => {
-    props.setPage({ index: props.page.index + 1, move: "after" });
-  };
-
-  const prevPage = () => {
-    props.setPage({ index: props.page.index - 1, move: "before" });
   };
 
   const submitSearch = (e) => {
@@ -33,11 +25,7 @@ const SearchOptions = (props) => {
   };
 
   return (
-    <form
-      className="form-container"
-      onSubmit={submitSearch}
-      style={props.loading ? { border: "2px solid red" } : null}
-    >
+    <form className="form-container" onSubmit={submitSearch}>
       <select disabled={props.loading} name="q" className="typeSelect">
         <option name="album" value="album">
           Albums
@@ -98,18 +86,16 @@ const SearchOptions = (props) => {
         <button disabled={props.loading}>Please wait</button>
       ) : (
         <div className="nav-buttons">
-          <FontAwesomeIcon
-            icon={solid("caret-left")}
-            className="page-button"
-            style={!props.before ? { color: "rgb(75,75,75)" } : null}
-            onClick={props.before ? prevPage : null}
+          <ArrowBack
+            before={props.before}
+            page={props.page}
+            setPage={props.setPage}
           />
           <button className="clickable">Search</button>
-          <FontAwesomeIcon
-            icon={solid("caret-right")}
-            className="page-button"
-            style={!props.after ? { color: "rgb(75,75,75)" } : null}
-            onClick={props.after ? nextPage : null}
+          <ArrowNext
+            after={props.after}
+            page={props.page}
+            setPage={props.setPage}
           />
         </div>
       )}

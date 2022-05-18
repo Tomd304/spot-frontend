@@ -8,3 +8,9 @@ html {
     background-color: #222;
     color: white;
 }
+
+.page-buttons {
+    margin-bottom: 3em;
+    font-size: 1.5em;
+    cursor: pointer;
+}

@@ -4,6 +4,8 @@ import Modal from "./components/Modal";
 import Header from "./components/Header";
 import SearchOptions from "./components/SearchOptions";
 import CardContainer from "./components/CardContainer";
+import ArrowBack from "./components/ArrowBack";
+import ArrowNext from "./components/ArrowNext";
 import Footer from "./components/Footer";
 import "./Dashboard.css";
 import axios from "axios";
@@ -113,7 +115,14 @@ const Dashboard = (props) => {
           savedItems={savedItems}
           setSavedItems={setSavedItems}
         />
+        {loading ? null : (
+          <div className="page-buttons">
+            <ArrowBack before={before} page={page} setPage={setPage} />
+            <ArrowNext after={after} page={page} setPage={setPage} />
+          </div>
+        )}
       </div>
+
       <Footer />
     </div>
   );
