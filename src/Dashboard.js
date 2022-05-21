@@ -37,7 +37,6 @@ const Dashboard = (props) => {
         });
         if (res.status == 401) {
           console.log("Expired / Bad Token, re-requesting");
-          props.setToken("");
           window.location.replace("/");
         }
         setSavedItems(res.data.results);
