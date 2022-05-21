@@ -4,7 +4,12 @@ import "./App.css";
 import axios from "axios";
 
 function App() {
-  const [auth, setAuth] = useState({ token: "", type: "noScope" });
+  const [auth, setAuth] = useState({
+    token: "",
+    type: "noScope",
+    expiry: null,
+  });
+  const [expiry, setExpiry] = useState(null);
 
   useEffect(() => {
     const getNoScopeToken = async () => {
@@ -32,24 +37,59 @@ function App() {
         setAuth({
           token: "Bearer " + tokenResponse.data.access_token,
           type: "noScope",
+          expiry: null,
         });
       } catch (e) {
         console.log(e);
       }
     };
+    const timeNow = new Date();
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let urlToken = "";
+    // if code in url set everything up
     if (urlParams.has("code")) {
       urlToken = urlParams.get("code");
       console.log("Setting withScope token: " + urlToken);
-      setAuth({ token: "Bearer " + urlToken, type: "withScope" });
+      // expires in 50 mins (spot api allows 60 mins)
+      let expiryDate = timeNow.setSeconds(timeNow.getSeconds() + 15);
+      setAuth({
+        token: "Bearer " + urlToken,
+        type: "withScope",
+        expiry: expiryDate,
+      });
+      localStorage.setItem("token", "Bearer " + urlToken);
+      localStorage.setItem("expiry", expiryDate);
       window.history.pushState({}, document.title, "/");
       console.log("Storing: " + auth.token);
-    } else if (auth.token == "") {
+    }
+    // if no token with scope set but one available in local storage then set states
+    else if (
+      auth.token == "" &&
+      localStorage.getItem("token") &&
+      timeNow.getTime() < localStorage.getItem("expiry")
+    ) {
+      setAuth({
+        token: localStorage.getItem("token"),
+        type: "withScope",
+        expiry: null,
+      });
+    }
+    // if there is a token in local token that has expired, delete states and local storage
+    else if (
+      localStorage.getItem("token") &&
+      timeNow.getTime() >= auth.expiryDate &&
+      auth.type == "noScope"
+    ) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiry");
       getNoScopeToken();
     }
-  }, []);
+    // else get a normal no scope token
+    else if (auth.token == "") {
+      getNoScopeToken();
+    }
+  });
 
   return (
     <>

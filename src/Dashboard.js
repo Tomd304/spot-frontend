@@ -133,6 +133,7 @@ const Dashboard = (props) => {
           openModal={openModal}
           type={searchOps.q}
           auth={props.auth}
+          setAuth={props.setAuth}
           savedItems={savedItems}
           setSavedItems={setSavedItems}
           openLoginModal={openLoginModal}

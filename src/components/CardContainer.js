@@ -24,6 +24,7 @@ const CardContainer = (props) => {
               setSavedItems={props.setSavedItems}
               type={props.type}
               auth={props.auth}
+              setAuth={props.setAuth}
               openLoginModal={props.openLoginModal}
             />
           );

@@ -20,50 +20,60 @@ const Card = (props) => {
   };
 
   const addSavedItem = async () => {
-    let url =
-      process.env.REACT_APP_BACKEND_URL +
-      (props.type == "album" ? "spotify/saveAlbum" : "spotify/saveTrack");
-    const res = await axios(url, {
-      method: "put",
-      headers: {
-        Authorization: props.auth.token,
-      },
-      params: { id: props.item.spotInfo.id },
-    });
-    if (res.status == 200) {
-      let newSaved = props.savedItems;
-      newSaved[props.index] = !newSaved[props.index];
-      props.setSavedItems(newSaved);
-      return true;
-    } else if (res.status == 401) {
-      console.log("Expired / Bad Token, re-requesting");
-      window.location.replace("/");
+    const timeNow = new Date();
+    if (timeNow.getTime() >= props.auth.expiry) {
+      props.setAuth({ token: "", type: "noScope", expiry: null });
     } else {
-      return false;
+      let url =
+        process.env.REACT_APP_BACKEND_URL +
+        (props.type == "album" ? "spotify/saveAlbum" : "spotify/saveTrack");
+      const res = await axios(url, {
+        method: "put",
+        headers: {
+          Authorization: props.auth.token,
+        },
+        params: { id: props.item.spotInfo.id },
+      });
+      if (res.status == 200) {
+        let newSaved = props.savedItems;
+        newSaved[props.index] = !newSaved[props.index];
+        props.setSavedItems(newSaved);
+        return true;
+      } else if (res.status == 401) {
+        console.log("Expired / Bad Token, re-requesting");
+        window.location.replace("/");
+      } else {
+        return false;
+      }
     }
   };
 
   const removeSavedItem = async () => {
-    let url =
-      process.env.REACT_APP_BACKEND_URL +
-      (props.type == "album" ? "spotify/removeAlbum" : "spotify/removeTrack");
-    const res = await axios(url, {
-      method: "delete",
-      headers: {
-        Authorization: props.auth.token,
-      },
-      params: { id: props.item.spotInfo.id },
-    });
-    if (res.status == 200) {
-      let newSaved = props.savedItems;
-      newSaved[props.index] = !newSaved[props.index];
-      props.setSavedItems(newSaved);
-      return true;
-    } else if (res.status == 401) {
-      console.log("Expired / Bad Token, re-requesting");
-      window.location.replace("/");
+    const timeNow = new Date();
+    if (timeNow.getTime() >= props.auth.expiry) {
+      props.setAuth({ token: "", type: "noScope", expiry: null });
     } else {
-      return false;
+      let url =
+        process.env.REACT_APP_BACKEND_URL +
+        (props.type == "album" ? "spotify/removeAlbum" : "spotify/removeTrack");
+      const res = await axios(url, {
+        method: "delete",
+        headers: {
+          Authorization: props.auth.token,
+        },
+        params: { id: props.item.spotInfo.id },
+      });
+      if (res.status == 200) {
+        let newSaved = props.savedItems;
+        newSaved[props.index] = !newSaved[props.index];
+        props.setSavedItems(newSaved);
+        return true;
+      } else if (res.status == 401) {
+        console.log("Expired / Bad Token, re-requesting");
+        window.location.replace("/");
+      } else {
+        return false;
+      }
     }
   };
 
