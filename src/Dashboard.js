@@ -54,6 +54,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const retrieveMusicItems = async (action) => {
+      console.log(process.env);
       const getMusicItems = async (action) => {
         setLoading(true);
         // when disable reloaded, do not change items, just disable after and exit function
