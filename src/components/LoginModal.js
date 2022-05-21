@@ -22,9 +22,9 @@ const LoginModal = (props) => {
           style={{ cursor: "pointer", fontWeight: 900 }}
           href={process.env.REACT_APP_BACKEND_URL + "auth/login"}
         >
-          Login Here
+          Authorise Spotify Here
         </a>
-        <p>To be able to Save items to Spotify</p>
+        <p style={{ margin: "0.5em 0" }}>To enable track / album saving</p>
       </div>
     </div>
   );
