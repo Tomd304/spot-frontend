@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "./components/Modal";
 import Header from "./components/Header";
-import Login from "./components/Login";
+import LoginModal from "./components/LoginModal";
 import SearchOptions from "./components/SearchOptions";
 import CardContainer from "./components/CardContainer";
 import ArrowBack from "./components/ArrowBack";
@@ -21,6 +21,7 @@ const Dashboard = (props) => {
   const [savedItems, setSavedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [shareInfo, setShareInfo] = useState({});
   const [page, setPage] = useState({ index: 0, move: "" });
   const [after, setAfter] = useState(null);
@@ -90,17 +91,21 @@ const Dashboard = (props) => {
     setShowModal(true);
   };
 
+  const openLoginModal = (e) => {
+    document.body.style.overflow = "hidden";
+    setShowLoginModal(true);
+  };
+
   return (
     <div className="view">
       {showModal ? (
         <Modal shareInfo={shareInfo} setShowModal={setShowModal} />
       ) : null}
+      {showLoginModal ? (
+        <LoginModal setShowLoginModal={setShowLoginModal} />
+      ) : null}
       <Header />
       <div className="dashboard">
-        {props.auth.type == "noScope" ? (
-          <Login auth={props.auth} setauth={props.setAuth} />
-        ) : null}
-
         <SearchOptions
           loading={loading ? true : false}
           after={after}
@@ -118,6 +123,7 @@ const Dashboard = (props) => {
           auth={props.auth}
           savedItems={savedItems}
           setSavedItems={setSavedItems}
+          openLoginModal={openLoginModal}
         />
         {loading ? null : (
           <div className="page-buttons">

@@ -1,0 +1,33 @@
+import "./LoginModal.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
+
+const LoginModal = (props) => {
+  const closeLoginModal = (e) => {
+    document.body.style.overflow = "";
+    props.setShowLoginModal(false);
+  };
+
+  return (
+    <div id="overlay" onClick={closeLoginModal}>
+      <div className="pop-up">
+        <div className="close-button">
+          <FontAwesomeIcon
+            onClick={closeLoginModal}
+            style={{ cursor: "pointer" }}
+            icon={solid("xmark")}
+          />
+        </div>
+        <a
+          style={{ cursor: "pointer", fontWeight: 900 }}
+          href={process.env.REACT_APP_BACKEND_URL + "auth/login"}
+        >
+          Login Here
+        </a>
+        <p>To be able to Save items to Spotify</p>
+      </div>
+    </div>
+  );
+};
+
+export default LoginModal;

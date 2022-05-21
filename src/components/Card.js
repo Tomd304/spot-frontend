@@ -1,6 +1,10 @@
 import "./Card.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, brands } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
+import {
+  regular,
+  solid,
+  brands,
+} from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
 import axios from "axios";
 
 const Card = (props) => {
@@ -65,8 +69,14 @@ const Card = (props) => {
 
   return (
     <div className="card">
-      <a href={props.item.spotInfo.url} rel="nor\eferrer" target="_blank">
+      <a href={props.item.spotInfo.url} rel="noreferrer" target="_blank">
         <img
+          alt={
+            "Album artwork for " +
+            props.item.spotInfo.name +
+            " by " +
+            props.item.spotInfo.artist.name
+          }
           src={props.item.spotInfo.image}
           style={{ cursor: "pointer" }}
           className="card-img"
@@ -75,7 +85,7 @@ const Card = (props) => {
       <div className="info">
         <p className="score">
           <FontAwesomeIcon icon={solid("arrow-up")} />
-          {" " + props.item.redditInfo.score}
+          {props.item.redditInfo.score}
         </p>
 
         <a
@@ -107,16 +117,22 @@ const Card = (props) => {
             />
           </a>
         </div>
-        {props.auth.type == "withScope" ? (
-          <div
-            style={{
-              color: props.disableSave
-                ? "gray"
-                : props.saved
-                ? " rgb(255, 88, 88)"
-                : "rgb(125, 70, 70)",
-            }}
-          >
+        <div
+          style={{
+            color: props.disableSave
+              ? "gray"
+              : props.saved
+              ? " rgb(255, 88, 88)"
+              : "rgb(125, 70, 70)",
+          }}
+        >
+          {props.auth.type == "noScope" ? (
+            <FontAwesomeIcon
+              style={{ cursor: "pointer", color: "grey" }}
+              icon={regular("heart")}
+              onClick={props.openLoginModal}
+            />
+          ) : (
             <FontAwesomeIcon
               style={{ cursor: "pointer" }}
               icon={
@@ -126,8 +142,8 @@ const Card = (props) => {
               }
               onClick={props.disableSave ? null : saveClick}
             />
-          </div>
-        ) : null}
+          )}
+        </div>
         <div>
           <a
             style={{ color: "rgb(212, 212, 212)" }}
