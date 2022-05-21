@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Modal from "./components/Modal";
+import ModalShare from "./components/ModalShare";
 import Header from "./components/Header";
-import LoginModal from "./components/LoginModal";
+import ModalLogin from "./components/ModalLogin";
 import SearchOptions from "./components/SearchOptions";
 import CardContainer from "./components/CardContainer";
 import ArrowBack from "./components/ArrowBack";
@@ -111,10 +111,10 @@ const Dashboard = (props) => {
   return (
     <div className="view">
       {showModal ? (
-        <Modal shareInfo={shareInfo} setShowModal={setShowModal} />
+        <ModalShare shareInfo={shareInfo} setShowModal={setShowModal} />
       ) : null}
       {showLoginModal ? (
-        <LoginModal setShowLoginModal={setShowLoginModal} />
+        <ModalLogin setShowLoginModal={setShowLoginModal} />
       ) : null}
       <Header />
       <div className="dashboard">

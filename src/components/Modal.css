@@ -5,14 +5,10 @@
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 20;
-    position: fixed;
-}
+    z-index: 10;
+  }
 
-.pop-up {
+.share-pop-up {
     width: 21em;
     background-color: #303030;
     border: 0.1em silver solid;
@@ -23,6 +19,18 @@
     margin: auto;
     letter-spacing: .1em;
 }
+
+.login-pop-up {
+    width: 21em;
+    background-color: #303030;
+    border: 0.1em silver solid;
+    padding: 1.6em 3em 0.7em 2em;
+    display: block;
+    z-index: 20;
+    position: fixed;
+    margin: auto;
+    letter-spacing: .1em;
+  }
 
 .close-button {
     font-size: 3em;
@@ -50,3 +58,12 @@
     background-color: #3b5998;
     cursor: pointer;
 }
+
+.modal-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
