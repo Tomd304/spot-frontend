@@ -3,7 +3,11 @@ import { solid } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- i
 
 const ArrowBack = (props) => {
   const prevPage = () => {
-    props.setPage({ index: props.page.index - 1, move: "before" });
+    props.setPage({
+      index: props.page.index - 1,
+      move: "before",
+      disable: false,
+    });
   };
 
   return (

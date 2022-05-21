@@ -21,7 +21,7 @@ const SearchOptions = (props) => {
       sort: e.target[1].value,
       t: e.target[2].value,
     });
-    props.setPage({ index: 0, move: "" });
+    props.setPage({ index: 0, move: "", disable: false });
   };
 
   return (

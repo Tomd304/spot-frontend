@@ -23,7 +23,7 @@ const Dashboard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [shareInfo, setShareInfo] = useState({});
-  const [page, setPage] = useState({ index: 0, move: "" });
+  const [page, setPage] = useState({ index: 0, move: "", disable: false });
   const [after, setAfter] = useState(null);
   const [before, setBefore] = useState(null);
 
@@ -56,6 +56,12 @@ const Dashboard = (props) => {
     const retrieveMusicItems = async (action) => {
       const getMusicItems = async (action) => {
         setLoading(true);
+        // when disable reloaded, do not change items, just disable after and exit function
+        if (page.disable) {
+          setAfter(null);
+          setLoading(false);
+          return;
+        }
         let params = {
           q: searchOps.q,
           t: searchOps.t,
@@ -74,9 +80,15 @@ const Dashboard = (props) => {
           },
         };
         let res = await axios(options);
-        setMusicItems(res.data.results);
-        setAfter(res.data.after);
-        setBefore(res.data.before);
+        // if no results, set a disable reload of this function and return
+        if (res.data.results.length == 0 && action == "after") {
+          setPage({ index: page.index - 1, move: "before", disable: true });
+          return;
+        } else {
+          setMusicItems(res.data.results);
+          setAfter(res.data.after);
+          setBefore(res.data.before);
+        }
       };
       setLoading(true);
       getMusicItems(action);
