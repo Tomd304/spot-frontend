@@ -15,6 +15,10 @@ const SearchOptions = (props) => {
 
   const submitSearch = (e) => {
     e.preventDefault();
+    const timeNow = new Date();
+    if (timeNow.getTime() >= props.auth.expiry) {
+      props.setAuth({ token: "", type: "noScope", expiry: null });
+    }
     props.setMusicItems([]);
     props.setSearchOps({
       q: e.target[0].value,
