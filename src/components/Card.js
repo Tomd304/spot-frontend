@@ -51,8 +51,11 @@ const Card = (props) => {
   const removeSavedItem = async () => {
     const timeNow = new Date();
     if (timeNow.getTime() >= props.auth.expiry) {
+      console.log("not rm");
+      console.log(props.auth);
       props.setAuth({ token: "", type: "noScope", expiry: null });
     } else {
+      console.log("rm");
       let url =
         process.env.REACT_APP_BACKEND_URL +
         (props.type == "album" ? "spotify/removeAlbum" : "spotify/removeTrack");
@@ -136,7 +139,7 @@ const Card = (props) => {
               : "rgb(125, 70, 70)",
           }}
         >
-          {props.auth.type == "noScope" ? (
+          {props.auth.type !== "withScope" ? (
             <FontAwesomeIcon
               style={{ cursor: "pointer", color: "grey" }}
               icon={regular("heart")}

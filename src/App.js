@@ -72,7 +72,7 @@ function App() {
       setAuth({
         token: localStorage.getItem("token"),
         type: "withScope",
-        expiry: null,
+        expiry: localStorage.getItem("expiry"),
       });
     }
     // if there is a token in local token that has expired, delete states and local storage
