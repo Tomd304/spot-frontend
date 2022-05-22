@@ -52,7 +52,7 @@ function App() {
       urlToken = urlParams.get("code");
       console.log("Setting withScope token: " + urlToken);
       // expires in 50 mins (spot api allows 60 mins)
-      let expiryDate = timeNow.setSeconds(timeNow.getSeconds() + 15);
+      let expiryDate = timeNow.setSeconds(timeNow.getSeconds() + 3000);
       setAuth({
         token: "Bearer " + urlToken,
         type: "withScope",
