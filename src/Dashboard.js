@@ -127,6 +127,8 @@ const Dashboard = (props) => {
           setPage={setPage}
           setMusicItems={setMusicItems}
           setSearchOps={setSearchOps}
+          auth={props.auth}
+          setAuth={props.setAuth}
         />
         <CardContainer
           loading={loading}
