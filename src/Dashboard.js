@@ -13,8 +13,8 @@ import axios from "axios";
 
 const Dashboard = (props) => {
   const [searchOps, setSearchOps] = useState({
-    q: "album",
-    t: "week",
+    q: "track",
+    t: "month",
     sort: "top",
   });
   const [musicItems, setMusicItems] = useState([]);

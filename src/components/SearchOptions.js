@@ -26,7 +26,12 @@ const SearchOptions = (props) => {
 
   return (
     <form className="form-container" onSubmit={submitSearch}>
-      <select disabled={props.loading} name="q" className="typeSelect">
+      <select
+        disabled={props.loading}
+        name="q"
+        className="typeSelect"
+        defaultValue="track"
+      >
         <option name="album" value="album">
           Albums
         </option>
@@ -40,6 +45,7 @@ const SearchOptions = (props) => {
         onChange={onChange}
         className="sortSelect"
         name="sort"
+        defaultValue="top"
       >
         <option name="top" value="top">
           Top
@@ -62,7 +68,7 @@ const SearchOptions = (props) => {
           disabled={disable || props.loading}
           className={disable ? "disabled " : "" + "timeSelect"}
           name="t"
-          defaultValue="week"
+          defaultValue="month"
         >
           <option name="year" value="year">
             Year
