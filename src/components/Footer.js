@@ -5,7 +5,7 @@ import { brands } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- 
 const Footer = (props) => {
   return (
     <div className="footer">
-      <a rel="noreferrer" target="_blank" href="https://github.com/Tomd304">
+      <a rel="noreferrer" target="_blank" href="https://github.com/Two-Shot">
         <FontAwesomeIcon
           style={{ cursor: "pointer", fontSize: "1.75em" }}
           icon={brands("github")}
