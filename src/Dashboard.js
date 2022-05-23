@@ -12,6 +12,7 @@ import "./Dashboard.css";
 import axios from "axios";
 
 const Dashboard = (props) => {
+  const [subreddit, setSubreddit] = useState("r/hiphopheads");
   const [searchOps, setSearchOps] = useState({
     q: "track",
     t: "month",
@@ -70,6 +71,7 @@ const Dashboard = (props) => {
           page: page.index,
           after: action == "after" ? after : "after",
           before: action == "before" ? before : "before",
+          subreddit,
         };
         let options = {
           url: process.env.REACT_APP_BACKEND_URL + "search/getItems",
@@ -96,7 +98,7 @@ const Dashboard = (props) => {
     };
     console.log(page.index);
     retrieveMusicItems(page.move);
-  }, [page]);
+  }, [page, subreddit]);
 
   const openModal = (e) => {
     document.body.style.overflow = "hidden";
@@ -117,7 +119,7 @@ const Dashboard = (props) => {
       {showLoginModal ? (
         <ModalLogin setShowLoginModal={setShowLoginModal} />
       ) : null}
-      <Header />
+      <Header setSubreddit={setSubreddit} />
       <div className="dashboard">
         <SearchOptions
           loading={loading ? true : false}
