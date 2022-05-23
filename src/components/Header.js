@@ -12,7 +12,7 @@ const Header = (props) => {
           <a href="https://www.reddit.com/r/hiphopheads">r/HIPHOPHEADS</a>
         </option>
         <option>
-          <a href="https://www.reddit.com/r/indieheads">r/INDIEHEADS&nbsp;</a>
+          <a href="https://www.reddit.com/r/indieheads">r/INDIEHEADS</a>
         </option>
       </select>
     </div>
