@@ -2,6 +2,7 @@
   "name": "spotify-sdk",
   "version": "0.1.0",
   "private": true,
+  "legacy-peer-deps":true,
   "engines": {
     "node": "17.8.0"
   },
