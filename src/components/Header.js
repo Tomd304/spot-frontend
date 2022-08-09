@@ -6,7 +6,7 @@ const Header = (props) => {
   };
   return (
     <div className="header">
-      <h1>FRESH ALERTS</h1>
+      <h1>FRESH ALERTS.</h1>
       <select className="subreddit-select" onChange={subChange}>
         <option>
           <a href="https://www.reddit.com/r/hiphopheads">r/HIPHOPHEADS</a>
